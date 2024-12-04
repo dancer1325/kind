@@ -136,11 +136,20 @@ See also: our own [contributor guide] and the Kubernetes [community page].
 
 ## Why kind?
 
-- kind supports multi-node (including HA) clusters
-- kind supports building Kubernetes release builds from source
-  - support for make / bash or docker, in addition to pre-published builds
-- kind supports Linux, macOS and Windows
-- kind is a [CNCF certified conformant Kubernetes installer](https://landscape.cncf.io/?selected=kind)
+- supports
+  - multi-node (including HA) clusters
+  - building Kubernetes release / -- builds from -- source
+    - support for make / bash or docker, in addition to pre-published builds
+  - Linux, macOS and Windows
+- [CNCF certified conformant Kubernetes installer](https://landscape.cncf.io/?selected=kind)
+- NOT require an additional VM
+  - Reason: 🧠 runs as a linux container /
+    - has a set of processes
+    - Linux kernel used == Linux kernel -- used by -- Docker daemon 
+  - 👀!= local installation of Minikube or Minishift👀
+    - Kubernetes cluster is started | VM
+      - == run a Linux kernel + Docker daemon -> consume EXTRA CPU and RAM
+        - -> kind is faster & consumes less CPU and RAM
 
 ### Code of conduct
 
