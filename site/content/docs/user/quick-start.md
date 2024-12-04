@@ -15,20 +15,22 @@ description: |-
 ---
 ## Installation
 
-> **NOTE**: `kind` does not require [`kubectl`](https://kubernetes.io/docs/reference/kubectl/overview/),
-> but you will not be able to perform some of the examples in our docs without it.
-> To install `kubectl` see the upstream [kubectl installation docs](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+* `kind`
+  * NOT require [`kubectl`](https://kubernetes.io/docs/reference/kubectl/overview/)
+    * recommendations
+      * [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+        * Reason: 🧠perform some of the examples here 🧠
 
-If you are a go developer you may find the [go install option](#installing-with-go-install) convenient.
-
-Otherwise we supply downloadable [release binaries](#installing-from-release-binaries), community-managed [packages](#installing-with-a-package-manager), and a [source installation guide](#installing-from-source).
-
-Stable tagged releases (currently {{< stableVersion >}}) are generally strongly recommended for CI usage in particular.
-
-You may need to install the latest code from source at HEAD if you are developing Kubernetes itself at HEAD / the latest sources.
+* ways to install kind
+  * [go install option](#installing-with-go-install)
+    * 👀recommended one 👀
+  * downloadable [release binaries](#installing-from-release-binaries)
+  * community-managed [packages](#installing-with-a-package-manager)
+  * [source installation guide](#installing-from-source)
 
 ### Installing From Release Binaries
 
+* TODO:
 Pre-built binaries are available on our [releases page](https://github.com/kubernetes-sigs/kind/releases).
 
 To install, download the binary for your platform from "Assets", then rename it to `kind` (or perhaps `kind.exe` on Windows) and place this
@@ -37,8 +39,10 @@ into your `$PATH` at your preferred binary installation directory.
 On Linux:
 
 {{< codeFromInline lang="bash" >}}
+
 # For AMD64 / x86_64
 [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/{{< stableVersion >}}/kind-linux-amd64
+
 # For ARM64
 [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/{{< stableVersion >}}/kind-linux-arm64
 chmod +x ./kind
@@ -48,8 +52,10 @@ sudo mv ./kind /usr/local/bin/kind
 On macOS:
 
 {{< codeFromInline lang="bash" >}}
+
 # For Intel Macs
 [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/{{< stableVersion >}}/kind-darwin-amd64
+
 # For M1 / ARM Macs
 [ $(uname -m) = arm64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/{{< stableVersion >}}/kind-darwin-arm64
 chmod +x ./kind
@@ -84,52 +90,61 @@ use it as `kind` from the command line.
 
 #### Installing with `go install`
 
-When installing with [Go](https://golang.org/) please use the latest stable Go release. At least go1.16 or greater is required.
+* install latest release [Go](https://golang.org/)
+  * or go1.16+
+* run
 
-To install use: `go install sigs.k8s.io/kind@{{< stableVersion >}}`.
+  ```
+  go install sigs.k8s.io/kind@{{< stableVersion >}}
+  
+  // Example:  go install sigs.k8s.io/kind@v0.25.0
+  ```
 
-If you are building from a local source clone, use `go install .` from the top-level directory of the clone.
+  * `kind` binary | `bin/` directory
+    * | `go env GOPATH`
+      * see Go's ["Compile and install packages and dependencies"](https://golang.org/cmd/go/#hdr-Compile_and_install_packages_and_dependencies)
+  * `kind version`
+    * confirmation that it's installed
+    * if you get an error -> add that directory | your `$PATH`
+      * see https://gist.github.com/nex3/c395b2f8fd4b02068be37c961301caa7#file-path-md
 
-`go install` will typically put the `kind` binary inside the `bin` directory under `go env GOPATH`, see
-Go's ["Compile and install packages and dependencies"](https://golang.org/cmd/go/#hdr-Compile_and_install_packages_and_dependencies)
-for more on this.
-You may need to add that directory to your `$PATH` if you encounter the error
-`kind: command not found` after installation, you can find a guide for adding a directory to your `PATH` at https://gist.github.com/nex3/c395b2f8fd4b02068be37c961301caa7#file-path-md.
+### Installing -- via a -- Package Manager
 
-### Installing With A Package Manager
+* maintained by the kind community
+  * != `kind` maintainers
 
-The kind community has enabled installation via the following package managers.
+* | macOS -- via --
+  * Homebrew
 
-> **NOTE**: The following are community supported efforts. The `kind` maintainers are not involved in the creation
-> of these packages, and the upstream community makes no claims on the validity, safety, or content of them.
+    {{< codeFromInline lang="bash" >}}
+    brew install kind
+    {{< /codeFromInline >}}
 
-On macOS via Homebrew:
+  * MacPorts
 
-{{< codeFromInline lang="bash" >}}
-brew install kind
-{{< /codeFromInline >}}
+    {{< codeFromInline lang="bash" >}}
+    sudo port selfupdate && sudo port install kind
+    {{< /codeFromInline >}}
 
-On macOS via MacPorts:
+* | Windows --  via --
+  * Chocolatey (https://chocolatey.org/packages/kind)
+  
+  {{< codeFromInline lang="powershell" >}}
+  choco install kind
+  {{< /codeFromInline >}}
 
-{{< codeFromInline lang="bash" >}}
-sudo port selfupdate && sudo port install kind
-{{< /codeFromInline >}}
+  * Scoop (https://scoop.sh/#/apps?q=kind&id=faec311bb7c6b4a174169c8c02358c74a78a10c2)
+  
+  {{< codeFromInline lang="powershell" >}}
+  scoop bucket add main
+  scoop install main/kind
+  {{< /codeFromInline >}}
 
-On Windows via Chocolatey (https://chocolatey.org/packages/kind)
-{{< codeFromInline lang="powershell" >}}
-choco install kind
-{{< /codeFromInline >}}
-
-On Windows via Scoop (https://scoop.sh/#/apps?q=kind&id=faec311bb7c6b4a174169c8c02358c74a78a10c2)
-{{< codeFromInline lang="powershell" >}}
-scoop bucket add main
-scoop install main/kind
-{{< /codeFromInline >}}
-
-On Windows via Winget (https://github.com/microsoft/winget-pkgs/tree/master/manifests/k/Kubernetes/kind)
-{{< codeFromInline lang="powershell" >}}
-winget install Kubernetes.kind
-{{< /codeFromInline >}}
+  * Winget (https://github.com/microsoft/winget-pkgs/tree/master/manifests/k/Kubernetes/kind)
+  
+  {{< codeFromInline lang="powershell" >}}
+  winget install Kubernetes.kind
+  {{< /codeFromInline >}}
 
 ## Creating a Cluster
 
