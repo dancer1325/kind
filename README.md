@@ -2,29 +2,35 @@
 
 # Please see [Our Documentation](https://kind.sigs.k8s.io/docs/user/quick-start/) for more in-depth installation etc.
 
-kind is a tool for running local Kubernetes clusters using Docker container "nodes".
-kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.
-
-If you have [go] 1.16+ and [docker], [podman] or [nerdctl] installed `go install sigs.k8s.io/kind@v0.25.0 && kind create cluster` is all you need!
-
-![](site/static/images/kind-create-cluster.png)
-
-kind consists of:
-- Go [packages][packages] implementing [cluster creation][cluster package], [image build][build package], etc.
-- A command line interface ([`kind`][kind cli]) built on these packages.
-- Docker [image(s)][images] written to run systemd, Kubernetes, etc.
-- [`kubetest`][kubetest] integration also built on these packages (WIP)
-
-kind bootstraps each "node" with [kubeadm][kubeadm]. For more details see [the design documentation][design doc].
-
-**NOTE**: kind is still a work in progress, see the [1.0 roadmap].
+* kind
+  * 👀 == tool for running -- via Docker container "nodes" -- local Kubernetes clusters 👀
+    * each "node" -- is bootstrapped with -- [kubeadm][kubeadm]
+  * origin
+    * testing Kubernetes itself
+  * uses 
+    * local development
+    * CI
+  * == 
+    * Go [packages][packages] / implement [cluster creation][cluster package], [image build][build package], etc + 
+    * CL interface ([`kind`][kind cli]) / built | previous packages +
+    * Docker [image(s)][images] / run systemd, Kubernetes, etc +
+    * [`kubetest`][kubetest] integration / built | previous packages (WIP)
+  * WIP
+    * see the [1.0 roadmap]
 
 ## Installation and usage
 
-For a complete [install guide] see [the documentation here][install guide].
+* fast
+  * installation
+    * if you have installed [go] 1.16+ -> run `go install sigs.k8s.io/kind@v0.25.0`
+  * usage
+    * if you have [docker], [podman] or [nerdctl] installed -> run `kind create cluster`
 
-You can install kind with `go install sigs.k8s.io/kind@v0.25.0`.
+![](site/static/images/kind-create-cluster.png)
 
+* see complete [install guide]
+
+* TODO:
 **NOTE**: please use the latest go to do this. KIND is developed with the latest stable go, see [`.go-version`](./.go-version) for the exact version we're using.
 
 This will put `kind` in `$(go env GOPATH)/bin`. If you encounter the error
