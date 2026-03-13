@@ -22,7 +22,7 @@
 
 * fast
   * installation
-    * if you have installed [go] 1.16+ -> run `go install sigs.k8s.io/kind@v0.25.0`
+    * if you have installed [go] 1.16+ -> run `go install sigs.k8s.io/kind@v0.31.0`
   * usage
     * if you have [docker], [podman] or [nerdctl] installed -> run `kind create cluster`
 
@@ -49,9 +49,9 @@ On Linux:
 
 ```console
 # For AMD64 / x86_64
-[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.25.0/kind-$(uname)-amd64
+[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-$(uname)-amd64
 # For ARM64
-[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.25.0/kind-$(uname)-arm64
+[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-$(uname)-arm64
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 ```
@@ -72,9 +72,9 @@ On macOS via Bash:
 
 ```console
 # For Intel Macs
-[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.25.0/kind-darwin-amd64
+[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-darwin-amd64
 # For M1 / ARM Macs
-[ $(uname -m) = arm64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.25.0/kind-darwin-arm64
+[ $(uname -m) = arm64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-darwin-arm64
 chmod +x ./kind
 mv ./kind /some-dir-in-your-PATH/kind
 ```
@@ -82,7 +82,7 @@ mv ./kind /some-dir-in-your-PATH/kind
 On Windows:
 
 ```powershell
-curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/v0.25.0/kind-windows-amd64
+curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/v0.31.0/kind-windows-amd64
 Move-Item .\kind-windows-amd64.exe c:\some-dir-in-your-PATH\kind.exe
 
 # OR via Chocolatey (https://chocolatey.org/packages/kind)
@@ -123,7 +123,7 @@ The maintainers of this project are reachable via:
 - [filing an issue] against this repo
 - The Kubernetes [SIG-Testing Mailing List]
 
-Current maintainers are [@aojea] and [@BenTheElder] - feel free to
+Current maintainers are [@aojea], [@BenTheElder], and [@stmcginnis] - feel free to
 reach out if you have any questions!
 
 Pull Requests are very welcome!
@@ -186,6 +186,7 @@ Participation in the Kubernetes community is governed by the [Kubernetes Code of
 [@munnerz]: https://github.com/munnerz
 [@aojea]: https://github.com/aojea
 [@amwat]: https://github.com/amwat
+[@stmcginnis]: https://github.com/stmcginnis
 [contributor guide]: https://kind.sigs.k8s.io/docs/contributing/getting-started
 [releases]: https://github.com/kubernetes-sigs/kind/releases
 [install guide]: https://kind.sigs.k8s.io/docs/user/quick-start/#installation

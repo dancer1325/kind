@@ -172,8 +172,11 @@ wait for 30 seconds, do `--wait 30s`, for 5 minutes do `--wait 5m`, etc.
 
 More usage can be discovered with `kind create cluster --help`.
 
-The kind can auto-detect the [docker], [podman], or [nerdctl] installed and choose the available one. If you want to turn off the auto-detect, use the environment variable `KIND_EXPERIMENTAL_PROVIDER=docker`, `KIND_EXPERIMENTAL_PROVIDER=podman` or `KIND_EXPERIMENTAL_PROVIDER=nerdctl` to
+kind can auto-detect the [docker], [podman], or [nerdctl] installed and choose the available one. If you want to turn off the auto-detect, use the environment variable `KIND_EXPERIMENTAL_PROVIDER=docker`, `KIND_EXPERIMENTAL_PROVIDER=podman` or `KIND_EXPERIMENTAL_PROVIDER=nerdctl` to
 select the runtime.
+
+> **NOTE**: podman and nerdctl operate in [rootless mode](/docs/user/rootless) by default. Extra
+> setup is needed for KIND clusters to be fully functional.
 
 ## Interacting With Your Cluster
 
@@ -233,13 +236,21 @@ context name `kind` and delete that cluster.
 
 ## Loading an Image Into Your Cluster
 
-Docker images can be loaded into your cluster nodes with:
+You can load one or more images into your kind cluster:
 
-`kind load docker-image my-custom-image-0 my-custom-image-1`
+```bash
+kind load docker-image my-app:latest
+```
 
-> **Note**: If using a named cluster you will need to specify the name of the
-> cluster you wish to load the images into:
-> `kind load docker-image my-custom-image-0 my-custom-image-1 --name kind-2`
+```bash
+kind load docker-image my-app:latest my-db:latest my-cache:latest
+```
+
+Note: If using a named cluster you will need to specify the name of the cluster:
+
+```bash
+kind load docker-image my-app:latest --name test-cluster
+```
 
 Additionally, image archives can be loaded with:
 `kind load image-archive /my-image-archive.tar`
@@ -248,7 +259,7 @@ This allows a workflow like:
 ```
 docker build -t my-custom-image:unique-tag ./my-image-dir
 kind load docker-image my-custom-image:unique-tag
-kubectl apply -f my-manifest-using-my-image:unique-tag
+kubectl apply -f my-manifest-using-my-image.yaml
 ```
 
 > **NOTE**: You can get a list of images present on a cluster node by

@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Package nodeimage implements the nodeimage CLI subcommand.
 package nodeimage
 
 import (
@@ -30,7 +31,6 @@ type flagpole struct {
 	BuildType string
 	Image     string
 	BaseImage string
-	KubeRoot  string
 	Arch      string
 }
 
@@ -44,12 +44,6 @@ func NewCommand(logger log.Logger, streams cmd.IOStreams) *cobra.Command {
 		Short: "Build the node image",
 		Long:  "Build the node image which contains Kubernetes build artifacts and other kind requirements",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if cmd.Flags().Lookup("kube-root").Changed {
-				if len(args) != 0 {
-					return errors.New("passing an argument and deprecated --kube-root is not supported, please switch to just the argument")
-				}
-				logger.Warn("--kube-root is deprecated, please switch to passing this as an argument")
-			}
 			return runE(logger, flags, args)
 		},
 	}
@@ -64,12 +58,6 @@ func NewCommand(logger log.Logger, streams cmd.IOStreams) *cobra.Command {
 		"image",
 		nodeimage.DefaultImage,
 		"name:tag of the resulting image to be built",
-	)
-	cmd.Flags().StringVar(
-		&flags.KubeRoot,
-		"kube-root",
-		"",
-		"DEPRECATED: please switch to just the argument. Path to the Kubernetes source directory (if empty, the path is autodetected)",
 	)
 	cmd.Flags().StringVar(
 		&flags.BaseImage,
@@ -87,14 +75,14 @@ func NewCommand(logger log.Logger, streams cmd.IOStreams) *cobra.Command {
 }
 
 func runE(logger log.Logger, flags *flagpole, args []string) error {
-	kubeRoot := flags.KubeRoot
+	sourceSpec := ""
 	if len(args) > 0 {
-		kubeRoot = args[0]
+		sourceSpec = args[0]
 	}
 	if err := nodeimage.Build(
 		nodeimage.WithImage(flags.Image),
 		nodeimage.WithBaseImage(flags.BaseImage),
-		nodeimage.WithKubeParam(kubeRoot),
+		nodeimage.WithKubeParam(sourceSpec),
 		nodeimage.WithLogger(logger),
 		nodeimage.WithArch(flags.Arch),
 		nodeimage.WithBuildType(flags.BuildType),
