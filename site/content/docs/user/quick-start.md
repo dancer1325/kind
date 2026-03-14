@@ -13,13 +13,13 @@ description: |-
 
   [known issues]: /docs/user/known-issues
 ---
+
 ## Installation
 
 * `kind`
-  * NOT require [`kubectl`](https://kubernetes.io/docs/reference/kubectl/overview/)
-    * recommendations
-      * [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-        * Reason: 🧠perform some of the examples here 🧠
+  * ❌NOT require [`kubectl`](https://kubernetes.io/docs/reference/kubectl/overview/)❌
+    * recommendations: [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+      * Reason: 🧠easy to interact 🧠
 
 * ways to install kind
   * [go install option](#installing-with-go-install)
@@ -28,18 +28,20 @@ description: |-
   * community-managed [packages](#installing-with-a-package-manager)
   * [source installation guide](#installing-from-source)
 
-### Installing From Release Binaries
+### -- from -- Release Binaries
 
-* TODO:
-Pre-built binaries are available on our [releases page](https://github.com/kubernetes-sigs/kind/releases).
+* steps
+  * | [Pre-built binaries](https://github.com/kubernetes-sigs/kind/releases) > "Assets",
+    * download it
+  * place it | your `$PATH`
+    * -- based on -- OS
+      * [Linux](#-linux)
+      * [macOS](#-macos)
+      * [Windows](#-windows-powershell)
 
-To install, download the binary for your platform from "Assets", then rename it to `kind` (or perhaps `kind.exe` on Windows) and place this
-into your `$PATH` at your preferred binary installation directory.
+#### | Linux
 
-On Linux:
-
-{{< codeFromInline lang="bash" >}}
-
+```shell
 # For AMD64 / x86_64
 [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/{{< stableVersion >}}/kind-linux-amd64
 
@@ -47,12 +49,11 @@ On Linux:
 [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/{{< stableVersion >}}/kind-linux-arm64
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
-{{< /codeFromInline >}}
+```
 
-On macOS:
+#### | macOS
 
-{{< codeFromInline lang="bash" >}}
-
+```shell
 # For Intel Macs
 [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/{{< stableVersion >}}/kind-darwin-amd64
 
@@ -60,40 +61,44 @@ On macOS:
 [ $(uname -m) = arm64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/{{< stableVersion >}}/kind-darwin-arm64
 chmod +x ./kind
 mv ./kind /some-dir-in-your-PATH/kind
-{{< /codeFromInline >}}
+```
 
-On Windows in [PowerShell](https://en.wikipedia.org/wiki/PowerShell):
+#### | Windows' [PowerShell](https://en.wikipedia.org/wiki/PowerShell):
 
-{{< codeFromInline lang="powershell" >}}
+```shell
 curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/{{< stableVersion >}}/kind-windows-amd64
 Move-Item .\kind-windows-amd64.exe c:\some-dir-in-your-PATH\kind.exe
-{{< /codeFromInline >}}
+```
 
-### Installing From Source
+### -- from -- source
 
-In addition to the pre-built binary + package manager installation options listed
-above you can install kind from source with `go install sigs.k8s.io/kind@{{< stableVersion >}}` or clone this repo
-and run `make build` from the repository.
+* ways
+  * -- via -- `go install`
+  * -- via -- `make`
 
-#### Installing With `make`
+#### -- via -- `make`
 
-Using `make build` does not require installing Go and will build kind reproducibly,
-the binary will be in `bin/kind` inside your clone of the repo.
+* ❌NO requirements❌
+  * install Go
 
-You should only need `make` and standard userspace utilities to run this build,
-it will automatically obtain the correct go version with our vendored copy of [`gimme`](https://github.com/travis-ci/gimme).
+* steps
+  * `make build`
+    * create binary | "bin/kind"
+    * AUTOMATICALLY obtain the correct go version -- from -- [`gimme`](https://github.com/travis-ci/gimme)
+    * if you want to use it -> `./bin/kind`
+    * ALTERNATIVE
+      * `make install`
+        * == `go install`
 
-You can then call `./bin/kind` to use it, or copy `bin/kind` into some directory in your system `PATH` to
-use it as `kind` from the command line.
+#### -- via -- `go install`
 
-`make install` will attempt to mimic `go install` and has the same path requirements as `go install` below.
+* ⚠️requirements⚠️
+  * install [Go](https://golang.org/)
+    * latest release, OR
+    * go1.16+
 
-#### Installing with `go install`
 
-* install latest release [Go](https://golang.org/)
-  * or go1.16+
-* run
-
+* steps
   ```
   go install sigs.k8s.io/kind@{{< stableVersion >}}
   
@@ -111,24 +116,17 @@ use it as `kind` from the command line.
 ### Installing -- via a -- Package Manager
 
 * maintained by the kind community
-  * != `kind` maintainers
+  * ❌!= `kind` maintainers❌
 
 * | macOS -- via --
   * Homebrew
-
-    {{< codeFromInline lang="bash" >}}
-    brew install kind
-    {{< /codeFromInline >}}
-
+    * `brew install kind`
   * MacPorts
-
-    {{< codeFromInline lang="bash" >}}
-    sudo port selfupdate && sudo port install kind
-    {{< /codeFromInline >}}
+    * `sudo port selfupdate && sudo port install kind`
 
 * | Windows --  via --
   * Chocolatey (https://chocolatey.org/packages/kind)
-  
+  TODO: 
   {{< codeFromInline lang="powershell" >}}
   choco install kind
   {{< /codeFromInline >}}
@@ -148,10 +146,12 @@ use it as `kind` from the command line.
 
 ## Creating a Cluster
 
-Creating a Kubernetes cluster is as simple as `kind create cluster`.
+* `kind create cluster`
+  * bootstrap -- , by using a pre-built [node image](../design/node-image), -- Kubernetes cluster 
 
-This will bootstrap a Kubernetes cluster using a pre-built
-[node image][node image]. Prebuilt images are hosted at[`kindest/node`][kindest/node], but to find images suitable for a given release currently you should check the [release notes] for your given kind version (check with `kind version`) where
+TODO:
+Prebuilt images are hosted at[`kindest/node`][kindest/node], but to find images suitable 
+for a given release currently you should check the [release notes] for your given kind version (check with `kind version`) where
 you'll find a complete listing of images created for a kind release.
 
 To specify another image use the `--image` flag -- `kind create cluster --image=...`.
@@ -505,7 +505,7 @@ kind, the Kubernetes cluster itself, etc.
 [nerdctl]: https://github.com/containerd/nerdctl
 [known issues]: /docs/user/known-issues
 [releases]: https://github.com/kubernetes-sigs/kind/releases
-[node image]: /docs/design/node-image
+[node image]: 
 [base image]: /docs/design/base-image
 [kind-example-config]: https://raw.githubusercontent.com/kubernetes-sigs/kind/main/site/content/docs/user/kind-example-config.yaml
 [kubernetes]: https://github.com/kubernetes/kubernetes

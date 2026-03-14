@@ -6,8 +6,7 @@ menu:
     identifier: "node-image"
 ---
 
-This page used to host a doc about the initial design, this has been found confusing
-so we've updated it to clarify the current expectations. While the sources of the project
+While the sources of the project
 are fully open, depending on the specifics of the node image internals is not supported.
 
 We only support that node images will create a working Kubernetes node at the advertised version with the kind version they

@@ -1,7 +1,12 @@
 # kind's docs
 
-kind's docs are built with [hugo], and can be browsed live at https://kind.sigs.k8s.io/
+* goal
+  * Kin documentation
 
-To browse them locally, install hugo and run `make serve` from this directory.
+* kind's docs
+  * built -- via -- [hugo](https://gohugo.io)
 
-[hugo]: https://gohugo.io
+# how to run it locally?
+* | this path,
+  * install hugo
+  * `make serve`

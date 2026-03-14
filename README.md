@@ -1,22 +1,30 @@
 <p align="center"><img alt="kind" src="./logo/logo.png" width="300px" /></p>
 
-# Please see [Our Documentation](https://kind.sigs.k8s.io/docs/user/quick-start/) for more in-depth installation etc.
 
 * kind
   * 👀 == tool for running -- via Docker container "nodes" -- local Kubernetes clusters 👀
-    * each "node" -- is bootstrapped with -- [kubeadm][kubeadm]
+    * each "node" -- is bootstrapped with -- [kubeadm](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm/)
   * origin
     * testing Kubernetes itself
   * uses 
     * local development
     * CI
   * == 
-    * Go [packages][packages] / implement [cluster creation][cluster package], [image build][build package], etc + 
-    * CL interface ([`kind`][kind cli]) / built | previous packages +
-    * Docker [image(s)][images] / run systemd, Kubernetes, etc +
+    * Go [packages](./pkg) / implement 
+      * [cluster creation](./pkg/cluster)
+      * [image build](./pkg/build)
+      * etc.
+    * CL interface ([`kind`](./main.go)) /
+      * built | previous packages 
+    * Docker [image(s)](./images) / 
+      * run 
+        * systemd
+        * Kubernetes
+        * etc
     * [`kubetest`][kubetest] integration / built | previous packages (WIP)
   * WIP
     * see the [1.0 roadmap]
+  * [documentation](site)
 
 ## Installation and usage
 
@@ -116,17 +124,17 @@ file, for more usage see [the docs][user guide] or run `kind [command] --help`
 
 ## Community
 
-Please reach out for bugs, feature requests, and other issues!
-The maintainers of this project are reachable via:
+* Current maintainers
+  * are
+    * [@aojea]
+    * [@BenTheElder]
+    * [@stmcginnis]
+  * reachable -- via --
+    * [Kubernetes Slack] | [#kind] channel
+    * [filing an issue] | this repo
+    * Kubernetes [SIG-Testing Mailing List]
 
-- [Kubernetes Slack] in the [#kind] channel
-- [filing an issue] against this repo
-- The Kubernetes [SIG-Testing Mailing List]
-
-Current maintainers are [@aojea], [@BenTheElder], and [@stmcginnis] - feel free to
-reach out if you have any questions!
-
-Pull Requests are very welcome!
+TODO: 
 If you're planning a new feature, please file an issue to discuss first.
 
 Check the [issue tracker] for `help wanted` issues if you're unsure where to
@@ -151,10 +159,6 @@ See also: our own [contributor guide] and the Kubernetes [community page].
       - == run a Linux kernel + Docker daemon -> consume EXTRA CPU and RAM
         - -> kind is faster & consumes less CPU and RAM
 
-### Code of conduct
-
-Participation in the Kubernetes community is governed by the [Kubernetes Code of Conduct].
-
 <!--links-->
 [go]: https://golang.org/
 [go-supported]: https://golang.org/doc/devel/release.html#policy
@@ -167,12 +171,11 @@ Participation in the Kubernetes community is governed by the [Kubernetes Code of
 [Go Report Card]: https://goreportcard.com/report/sigs.k8s.io/kind
 [conformance tests]: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/conformance-tests.md
 [packages]: ./pkg
-[cluster package]: ./pkg/cluster
-[build package]: ./pkg/build
-[kind cli]: ./main.go
+[cluster package]: 
+[build package]: 
+[kind cli]: 
 [images]: ./images
 [kubetest]: https://github.com/kubernetes/test-infra/tree/master/kubetest
-[kubeadm]: https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm/
 [design doc]: https://kind.sigs.k8s.io/docs/design/initial
 [user guide]: https://kind.sigs.k8s.io/docs/user/quick-start
 [SIG-Testing Mailing List]: https://groups.google.com/forum/#!forum/kubernetes-sig-testing

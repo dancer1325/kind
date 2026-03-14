@@ -1,12 +1,9 @@
 ---
 title: kind
 ---
-<p style="text-align: center; margin-top: 2em; margin-bottom: -.75em;"><img alt="kind" src="./logo/logo.png" width="300px" /></p>
 
-[kind] is a tool for running local Kubernetes clusters using Docker container "nodes".  
-kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.
-
-If you have [go] 1.17+ and [docker], [podman] or [nerdctl] installed `go install sigs.k8s.io/kind@{{< stableVersion >}} && kind create cluster` is all you need!
+If you have [go] 1.17+ and [docker], [podman] or [nerdctl] installed
+`go install sigs.k8s.io/kind@{{< stableVersion >}} && kind create cluster` is all you need!
 
 <img src="images/kind-create-cluster.png" />
 

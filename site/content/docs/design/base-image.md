@@ -6,8 +6,7 @@ menu:
     identifier: "base-image"
 ---
 
-This page used to host a doc about the initial design, this has been found confusing
-so we've updated it to clarify the current expectations. While the sources of the project
+TODO: While the sources of the project
 are fully open, depending on the specifics of the node image internals is not supported.
 
 We only support that base images will create a working node image with `kind build node-image` at the kind release they were shipped with.
