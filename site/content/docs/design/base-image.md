@@ -12,7 +12,7 @@ are fully open, depending on the specifics of the node image internals is not su
 We only support that base images will create a working node image with `kind build node-image` at the kind release they were shipped with.
 
 The contents and implemlentation of the images are subject to change at any time
-to fix bugs, improve reliability, performance, or maintainability.
+to fix bugs, improve reliability, performance, or maintainability.`
 
 DO NOT DEPEND ON THE INTERNALS OF THE BASE IMAGES.
 
