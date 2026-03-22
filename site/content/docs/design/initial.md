@@ -23,10 +23,16 @@ description: |-
 Kubernetes "clusters" where each "node" is a Docker container.
 `kind` is targeted at testing Kubernetes.
 
-`kind` is divided into go packages implementing most of the functionality, a
-command line for users, and a "node" base image. The intent is that the `kind`
-suite of packages should eventually be importable and reusable by other
-tools (e.g. [kubetest][kubetest])
+- `kind`
+  - == go packageS / implement 
+    - MOST of the functionality
+    - CL
+    - "node" base image
+  - goal 
+    - importable & reusable -- by -- OTHER
+tools
+      - _Example:_ [kubetest](https://github.com/kubernetes/test-infra/tree/master/kubetest)
+
 while the CLI provides a quick way to use and debug these packages.
 
 For [the original proposal][original proposal] by [Q-Lee][q-lee] see [the kubernetes-sig-testing post][sig-testing-post] (NOTE: this document is shared with [kubernetes-sig-testing][kubernetes-sig-testing]).
