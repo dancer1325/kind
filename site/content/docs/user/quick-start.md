@@ -20,11 +20,11 @@ description: |-
   * ❌NOT require [`kubectl`](https://kubernetes.io/docs/reference/kubectl/overview/)❌
     * recommendations: [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
       * Reason: 🧠easy to interact 🧠
-  * requirements
+  * ⚠️requirements⚠️
     * install Docker
 
 * ways to install kind
-  * [go install option](#---via----go-install)
+  * [go](#---via----go-install)
     * 👀recommended one 👀
   * downloadable [release binaries](#---from----release-binaries)
   * community-managed [packages](#installing----via-a----package-manager)
@@ -145,26 +145,28 @@ Move-Item .\kind-windows-amd64.exe c:\some-dir-in-your-PATH\kind.exe
   winget install Kubernetes.kind
   {{< /codeFromInline >}}
 
-## Creating a Cluster
+## how to create a cluster?
 
 * `kind create cluster`
-  * bootstrap -- , by using a pre-built [node image](../design/node-image), -- Kubernetes cluster 
+  * 👀bootstrap -- , by using a pre-built [node image](../design/node-image), -- a Kubernetes cluster👀
+    * [pre-built node imageS](https://hub.docker.com/r/kindest/node/)
+  * `--image`
+    * OPTIONAL
+    * == `kind create cluster --image=...`
+    * allows
+      * specifying ANOTHER image
+  * `--name=SpecifyClusterName`
+    * OPTIONAL
+    * by default, 
+      * cluster name == "kind"
+    * allows
+      * assigning the cluster -- to a -- DIFFERENT context name
+
+* pre-built node images
+  * related -- with -- a Kubernetes version
+  * ⚠️exist >1 / EACH [kind release](https://github.com/kubernetes-sigs/kind/releases)⚠️
 
 TODO: 
-Prebuilt images are hosted at[`kindest/node`][kindest/node], but to find images suitable 
-for a given release currently you should check the [release notes] for your given kind version (check with `kind version`) where
-you'll find a complete listing of images created for a kind release.
-
-* `--image`
-  * == `kind create cluster --image=...`
-  * allows
-    * specifying ANOTHER image
-
-* If you desire to build the node image yourself with a custom version see the
-[building images](#building-images) section.
-
-By default, the cluster will be given the name `kind`.
-Use the `--name` flag to assign the cluster a different context name.
 
 If you want the `create cluster` command to block until the control plane
 reaches a ready status, you can use the `--wait` flag and specify a timeout.
@@ -230,7 +232,7 @@ kubectl cluster-info --context kind-kind
 kubectl cluster-info --context kind-kind-2
 ```
 
-## Deleting a Cluster
+## how to delete a cluster?
 
 ```
 kind delete cluster
@@ -244,24 +246,17 @@ context name `kind` and delete that cluster.
 * This is intentional and is a means to have an
 > idempotent way of cleaning up resources.
 
-## Loading an Image Into Your Cluster
-
-You can load one or more images into your kind cluster:
+## how to load an image | your cluster?
 
 ```bash
-kind load docker-image my-app:latest
-```
+kind load docker-image DockerImage1Name:ChooseVersion DockerImage2Name:ChooseAnotherVersion
+# kind load docker-image my-app:latest my-db:latest my-cache:latest
 
-```bash
-kind load docker-image my-app:latest my-db:latest my-cache:latest
-```
-
-Note: If using a named cluster you will need to specify the name of the cluster:
-
-```bash
+# if cluster name != kind -> specify `--name ClusterName`
 kind load docker-image my-app:latest --name test-cluster
 ```
 
+TODO:ºº
 Additionally, image archives can be loaded with:
 `kind load image-archive /my-image-archive.tar`
 
@@ -297,6 +292,10 @@ See also: [Using kind with Private Registries][Private Registries].
 
 ## Building Images
 
+* goal
+  * build a node image / you choose the supported Kubernetes version
+
+TODO: 
 > **NOTE**: If you're using Docker Desktop, be sure to read [Settings for Docker Desktop](#settings-for-docker-desktop) first.
 
 kind runs a local Kubernetes cluster by using Docker containers as "nodes".

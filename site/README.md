@@ -1,7 +1,7 @@
 # kind's docs
 
 * goal
-  * Kin documentation
+  * Kind documentation
 
 * kind's docs
   * built -- via -- [hugo](https://gohugo.io)

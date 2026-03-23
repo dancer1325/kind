@@ -6,18 +6,18 @@ menu:
     identifier: "base-image"
 ---
 
-TODO: While the sources of the project
-are fully open, depending on the specifics of the node image internals is not supported.
+* [base image](/images/base)
 
-We only support that base images will create a working node image with `kind build node-image` at the kind release they were shipped with.
+* goal
+    * base images / create a working node image -- via -- `kind build node-image`
 
-The contents and implemlentation of the images are subject to change at any time
-to fix bugs, improve reliability, performance, or maintainability.`
-
-DO NOT DEPEND ON THE INTERNALS OF THE BASE IMAGES.
-
-KIND provides [conformant][conformance] Kubernetes, anything else is an implementation detail.
-
-We will not accept bugs about "breaking changes" to base images and you depend on the implementation details at your own peril.
-
-[conformance]: https://www.cncf.io/training/certification/software-conformance/
+* base images' internals
+  * _Examples:_ paths, scripts, process, configurations
+  * ⚠️can change | ANY time⚠️
+    * POSSIBLE REASONS:🧠
+      * fix bugs
+      * improve
+        * reliability
+        * performance
+        * maintainability🧠
+    * -> ❌NOT write code / -- depends on -- these internals❌

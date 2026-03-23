@@ -1,9 +1,11 @@
 <p align="center"><img alt="kind" src="./logo/logo.png" width="300px" /></p>
 
 
-* kind
-  * 👀 == tool for running -- via Docker container "nodes" -- local Kubernetes clusters 👀
-    * each "node" -- is bootstrapped with -- [kubeadm](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm/)
+* kind (Kubernetes In Docker)
+  * 👀 == tool for running -- , via Docker container, -- local Kubernetes clusters 👀
+    * EACH "node"
+      * == Docker container
+      * -- is bootstrapped with -- [kubeadm](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm/)
   * origin
     * testing Kubernetes itself
   * uses 
