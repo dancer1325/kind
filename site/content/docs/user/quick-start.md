@@ -20,13 +20,15 @@ description: |-
   * ❌NOT require [`kubectl`](https://kubernetes.io/docs/reference/kubectl/overview/)❌
     * recommendations: [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
       * Reason: 🧠easy to interact 🧠
+  * requirements
+    * install Docker
 
 * ways to install kind
-  * [go install option](#installing-with-go-install)
+  * [go install option](#---via----go-install)
     * 👀recommended one 👀
-  * downloadable [release binaries](#installing-from-release-binaries)
-  * community-managed [packages](#installing-with-a-package-manager)
-  * [source installation guide](#installing-from-source)
+  * downloadable [release binaries](#---from----release-binaries)
+  * community-managed [packages](#installing----via-a----package-manager)
+  * [source installation guide](#---from----source)
 
 ### -- from -- Release Binaries
 
@@ -96,7 +98,6 @@ Move-Item .\kind-windows-amd64.exe c:\some-dir-in-your-PATH\kind.exe
   * install [Go](https://golang.org/)
     * latest release, OR
     * go1.16+
-
 
 * steps
   ```
@@ -181,6 +182,8 @@ select the runtime.
 * Extra
 > setup is needed for KIND clusters to be fully functional.
 
+![](/site/static/images/kind-create-cluster.png)
+
 ## Interacting With Your Cluster
 
 TODO:
@@ -229,8 +232,6 @@ kubectl cluster-info --context kind-kind-2
 
 ## Deleting a Cluster
 
-If you created a cluster with `kind create cluster` then deleting is equally
-simple:
 ```
 kind delete cluster
 ```
@@ -376,7 +377,6 @@ You may also try removing any unused data left by the Docker engine - e.g.,
 `docker system prune`.
 
 ## Advanced
-
 
 ### Configuring Your kind Cluster
 
