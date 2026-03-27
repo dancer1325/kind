@@ -12,19 +12,18 @@ description: |-
 
   There are multiple ways to do this, which we try to cover here.
 ---
-## Use ImagePullSecrets
 
-Kubernetes supports configuring pods to use `imagePullSecrets` for pulling
-images. If possible, this is the preferable and most portable route.
+* goal
+  * how to configure Kind / can download images -- from -- private registry?
 
-See [the upstream kubernetes docs for this][imagePullSecrets],
-kind does not require any special handling to use this.
+## use `ImagePullSecrets`
 
-If you already have the config file locally but would still like to use secrets,
-read through kubernetes' docs for [creating a secret from a file][imagePullFileSecrets].
+* [Kubernetes `ImagePullSecrets`](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)
+  * [retrieve -- from -- secrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials)
 
 ## Pull to the Host and Side-Load
 
+TODO: 
 kind can [load an image][loading an image] from the host with the `kind load ...`
 commands. If you configure your host with credentials to pull the desired 
 image(s) and then load them to the nodes you can avoid needing to authenticate 
@@ -33,25 +32,13 @@ on the nodes.
 
 ## Add Credentials to the Nodes
 
-Generally the upstream docs for [using a private registry] apply, with kind
+* Generally the upstream docs for [using a private registry] apply, with kind
 there are two options for this.
 
 ### Mount a Config File to Each Node
 
 If you pre-create a docker config.json containing credential(s) on the host
 you can mount it to each kind node.
-
-Assuming your file is at `/path/to/my/secret.json`, the kind config would be:
-
-{{< codeFromInline lang="yaml" >}}
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-nodes:
-- role: control-plane
-  extraMounts:
-  - containerPath: /var/lib/kubelet/config.json
-    hostPath: /path/to/my/secret.json
-{{< /codeFromInline >}}
 
 #### Use an Access Token
 
@@ -83,7 +70,6 @@ See Google's [upstream docs][keyFileAuthentication] on key file authentication f
 
 [keyFileAuthentication]: https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file
 [imagePullSecrets]: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-[imagePullFileSecrets]: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials
 [loading an image]: /docs/user/quick-start/#loading-an-image-into-your-cluster
 [using a private registry]: https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry
 [GCR]: https://cloud.google.com/container-registry/
@@ -92,22 +78,4 @@ See Google's [upstream docs][keyFileAuthentication] on key file authentication f
 
 If you have a registry authenticated with certificates, and both certificates and keys
 reside on your host folder, it is possible to mount and use them into the `containerd` plugin
-patching the default configuration, like in the example:
-
-{{< codeFromInline lang="yaml" >}}
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-nodes:
-  - role: control-plane
-    # This option mounts the host docker registry folder into
-    # the control-plane node, allowing containerd to access them. 
-    extraMounts:
-      - containerPath: /etc/docker/certs.d/registry.dev.example.com
-        hostPath: /etc/docker/certs.d/registry.dev.example.com
-# NOTE: the following patch is not necessary with images from kind v0.27.0+
-# It may enable some older images to work similarly
-containerdConfigPatches:
-- |-
-  [plugins."io.containerd.grpc.v1.cri".registry]
-    config_path = "/etc/containerd/certs.d"
-{{< /codeFromInline >}}
+patching the default configuration

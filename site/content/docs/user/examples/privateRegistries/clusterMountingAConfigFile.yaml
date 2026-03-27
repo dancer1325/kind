@@ -1,0 +1,8 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraMounts:
+      - containerPath: /var/lib/kubelet/config.json
+        # your file is | "/path/to/my/secret.json"
+        hostPath: /path/to/my/secret.json
