@@ -103,7 +103,7 @@ Move-Item .\kind-windows-amd64.exe c:\some-dir-in-your-PATH\kind.exe
   ```
   go install sigs.k8s.io/kind@{{< stableVersion >}}
   
-  // Example:  go install sigs.k8s.io/kind@v0.25.0
+  // Example:  go install sigs.k8s.io/kind@v0.31.0
   ```
 
   * `kind` binary | `bin/` directory
