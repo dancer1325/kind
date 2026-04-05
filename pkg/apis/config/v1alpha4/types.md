@@ -134,49 +134,62 @@ const (
 # `type Networking struct {`
 * == network settings
   * cluster-wide
-* 
-    // IPFamily is the network cluster model, currently it can be ipv4 or ipv6
-    IPFamily ClusterIPFamily `yaml:"ipFamily,omitempty" json:"ipFamily,omitempty"`
-    // APIServerPort is the listen port on the host for the Kubernetes API Server
-    // Defaults to a random port on the host obtained by kind
-    //
-    // NOTE: if you set the special value of `-1` then the node backend
-    // (docker, podman...) will be left to pick the port instead.
-    // This is potentially useful for remote hosts, BUT it means when the container
-    // is restarted it will be randomized. Leave this unset to allow kind to pick it.
-    APIServerPort int32 `yaml:"apiServerPort,omitempty" json:"apiServerPort,omitempty"`
-    // APIServerAddress is the listen address on the host for the Kubernetes
-    // API Server. This should be an IP address.
-    //
-    // Defaults to 127.0.0.1
-    APIServerAddress string `yaml:"apiServerAddress,omitempty" json:"apiServerAddress,omitempty"`
-    // PodSubnet is the CIDR used for pod IPs
-    // kind will select a default if unspecified
-    PodSubnet string `yaml:"podSubnet,omitempty" json:"podSubnet,omitempty"`
-    // ServiceSubnet is the CIDR used for services VIPs
-    // kind will select a default if unspecified for IPv6
-    ServiceSubnet string `yaml:"serviceSubnet,omitempty" json:"serviceSubnet,omitempty"`
-    // If DisableDefaultCNI is true, kind will not install the default CNI setup.
-    // Instead the user should install their own CNI after creating the cluster.
-    DisableDefaultCNI bool `yaml:"disableDefaultCNI,omitempty" json:"disableDefaultCNI,omitempty"`
-    // KubeProxyMode defines if kube-proxy should operate in iptables, ipvs or nftables mode
-    // Defaults to 'iptables' mode
-    KubeProxyMode ProxyMode `yaml:"kubeProxyMode,omitempty" json:"kubeProxyMode,omitempty"`
-    // DNSSearch defines the DNS search domain to use for nodes. If not set, this will be inherited from the host.
-    DNSSearch *[]string `yaml:"dnsSearch,omitempty" json:"dnsSearch,omitempty"`
-}
 
-// ClusterIPFamily defines cluster network IP family
+* ``IPFamily ClusterIPFamily `yaml:"ipFamily,omitempty" json:"ipFamily,omitempty"``
+  * == network cluster model
+    
+* ``APIServerPort int32 `yaml:"apiServerPort,omitempty" json:"apiServerPort,omitempty"``
+  * == host's listen port -- for the -- Kubernetes API Server
+    * by default,
+      * a random port
+    * if you set `-1` -> node backend (docker, podman...) pick the port
+  * use cases
+    * remote hosts
+  * TODO: BUT it means when the container is restarted it will be randomized
+      
+  
+* ``APIServerAddress string `yaml:"apiServerAddress,omitempty" json:"apiServerAddress,omitempty"``
+  * == host's listen address -- for the -- Kubernetes API Server
+  * == IP address
+    * by default,
+      * 127.0.0.1
+      
+// PodSubnet is the CIDR used for pod IPs
+      // kind will select a default if unspecified
+      PodSubnet string `yaml:"podSubnet,omitempty" json:"podSubnet,omitempty"`
+
+      // ServiceSubnet is the CIDR used for services VIPs
+      // kind will select a default if unspecified for IPv6
+      ServiceSubnet string `yaml:"serviceSubnet,omitempty" json:"serviceSubnet,omitempty"`
+
+      // If DisableDefaultCNI is true, kind will not install the default CNI setup.
+      // Instead the user should install their own CNI after creating the cluster.
+      DisableDefaultCNI bool `yaml:"disableDefaultCNI,omitempty" json:"disableDefaultCNI,omitempty"`
+
+      // KubeProxyMode defines if kube-proxy should operate in iptables, ipvs or nftables mode
+      // Defaults to 'iptables' mode
+      KubeProxyMode ProxyMode `yaml:"kubeProxyMode,omitempty" json:"kubeProxyMode,omitempty"`
+
+      // DNSSearch defines the DNS search domain to use for nodes. If not set, this will be inherited from the host.
+      DNSSearch *[]string `yaml:"dnsSearch,omitempty" json:"dnsSearch,omitempty"`
+  }
+
+
 # `type ClusterIPFamily string`
-
+* == cluster network IP family 
+```
 const (
-	// IPv4Family sets ClusterIPFamily to ipv4
+	// ClusterIPFamily == ipv4
 	IPv4Family ClusterIPFamily = "ipv4"
-	// IPv6Family sets ClusterIPFamily to ipv6
+	
+	// ClusterIPFamily == ipv6
 	IPv6Family ClusterIPFamily = "ipv6"
-	// DualStackFamily sets ClusterIPFamily to dual
+	
+	// ClusterIPFamily == dual
 	DualStackFamily ClusterIPFamily = "dual"
 )
+```
+
 
 # `type ProxyMode string`
 * == proxy mode

@@ -45,59 +45,36 @@ This may be used to e.g. disable beta / alpha APIs, or even enable deprecated AP
 
 ### Networking
 
-Multiple details of the cluster's networking can be customized under the
-`networking` field.
-
 #### IP Family
 
-KIND has support for IPv4, IPv6 and dual-stack clusters, with the default being `ipv4`
-* You can change this by setting `ipFamily` under `networking` to `ipv6` or `dual`, see below for more requirements.
+* supported ones
+  * IPv4
+    * default one
+  * IPv6
+  * dual-stack
 
 ##### IPv6 clusters
-You can run IPv6 single-stack clusters using `kind`, if the host that runs the docker containers support IPv6.
-Most operating systems / distros have IPv6 enabled by default, but you can check on Linux with the following command:
 
-```sh
-sudo sysctl net.ipv6.conf.all.disable_ipv6
-```
+* ⚠️requirements⚠️
+  * host / runs the docker containers
+    * support IPv6
+      * | MOST OS OR distros, IPv6 is enabled by default
+      * way to check
+        * | Linux
 
-You should see:
-
-```sh
-net.ipv6.conf.all.disable_ipv6 = 0
-```
-
-If you are using Docker on Windows or Mac, you will need to use an IPv4 port
-forward for the API Server from the host because IPv6 port forwards don't work
-on these platforms, you can do this with the following config:
-
-```yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-networking:
-  ipFamily: ipv6
-  apiServerAddress: 127.0.0.1
-```
-
-* | Linux
-
-```yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-networking:
-  ipFamily: ipv6
-```
+          ```sh
+          sudo sysctl net.ipv6.conf.all.disable_ipv6
+          # COMMON output
+          #   net.ipv6.conf.all.disable_ipv6 = 0          
+          ```
+  * | Docker | Windows or Mac,
+    * use an IPv4 port forward -- for the -- API Server
+      * Reason:🧠IPv6 port forwards do NOT work | these platforms🧠 you can do this with the following config:
 
 ##### Dual Stack clusters
-You can run dual stack clusters using `kind` 0.11+, on kubernetes versions 1.20+.
-
-```yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-networking:
-  ipFamily: dual
-
-```
+* requirements
+  * kind v0.11+
+  * Kubernetes v1.20+
 
 #### API Server
 
