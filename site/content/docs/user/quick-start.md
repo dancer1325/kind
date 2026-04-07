@@ -235,16 +235,11 @@ kubectl cluster-info --context kind-kind-2
 ## how to delete a cluster?
 
 ```
+# delete default cluster  == cluster's name = kind
 kind delete cluster
 ```
 
-If the flag `--name` is not specified, kind will use the default cluster
-context name `kind` and delete that cluster.
-
-> **Note**: By design, requesting to delete a cluster that does not exist
-> will not return an error
-* This is intentional and is a means to have an
-> idempotent way of cleaning up resources.
+* ❌if you specify a cluster / does NOT exist -> does NOT return an error❌
 
 ## how to load an image | your cluster?
 

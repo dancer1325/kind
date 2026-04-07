@@ -64,4 +64,21 @@
 ## TODO:
 
 # options / node
+## Kubernetes Version
+* `kind create cluster --config clusterWithKubernetesVersionConfig.yaml`
+  * `docker ps | grep "kindest/node"`
+    * check the node's image version
+
+## TODO:
+
+## Extra Port Mappings
+* `kind create cluster --config clusterWithExtraPortMappings.yaml`
+  * Problems:
+    * Problem1: "ERROR: failed to create cluster: could not find a log line that matches "Reached target .*Multi-User System.*|detected cgroup v1""
+      * Solution: `kind get clusters` & `kind delete cluster <KIND_CLUSTER_NAME>`
+* `kubectl apply -f podAndNodePortService.yaml`
+### allows: | your host, get traffic DIRECTLY -- to -- your kind cluster
+* `curl localhost:8080`
+  * 's return foo
+
 ## TODO:

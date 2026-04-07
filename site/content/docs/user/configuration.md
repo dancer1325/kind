@@ -176,24 +176,11 @@ To disable kube-proxy, set the mode to `"none"`.
 
 ### Kubernetes Version
 
-You can set a specific Kubernetes version by setting the `node`'s container image
-* You can find available image tags on the [releases page](https://github.com/kubernetes-sigs/kind/releases)
-* Please include the `@sha256:` [image digest](https://docs.docker.com/engine/reference/commandline/pull/#pull-an-image-by-digest-immutable-identifier) from the image in the release notes, as seen in this example:
-
-```yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-nodes:
-- role: control-plane
-  image: kindest/node:v1.16.4@sha256:b91a2c2317a000f3a783489dfb755064177dbc3a0b2f4147d50f04825d016f55
-- role: worker
-  image: kindest/node:v1.16.4@sha256:b91a2c2317a000f3a783489dfb755064177dbc3a0b2f4147d50f04825d016f55
-```
-
-[Reference](https://kind.sigs.k8s.io/docs/user/quick-start/#creating-a-cluster) 
-
-**Note**: Kubernetes versions are expressed as x.y.z, where x is the major version, y is the minor version, and z is the patch version, following [Semantic Versioning](https://semver.org/) terminology
-* For more information, see [Kubernetes Release Versioning.](https://github.com/kubernetes/sig-release/blob/master/release-engineering/versioning.md#kubernetes-release-versioning)
+* | "*.yaml" / `kind: Cluster`
+  * specify `nodes[*].image`
+    * == kindes/node:<AVAILABLE_TAG>@sha256:<SHA_256_IMAGE_DIGEST>
+      * [AVAILABLE image tags](https://github.com/kubernetes-sigs/kind/releases)
+      * [image digest](https://docs.docker.com/engine/reference/commandline/pull/#pull-an-image-by-digest-immutable-identifier)
 
 ### Extra Mounts
 
@@ -210,85 +197,23 @@ For more information see the [Docker file sharing guide.](https://docs.docker.co
 
 ### Extra Port Mappings
 
-Extra port mappings can be used to port forward to the kind nodes
-* This is a 
-cross-platform option to get traffic into your kind cluster. 
+* Extra port mappings
+  * == cross-platform option
+    * allows
+      * 💡| your host, get traffic DIRECTLY -- to -- your kind cluster💡
+  * uses
+    * port forward -- to the -- kind nodes
+  * use cases
+    * Docker Desktop Application | ANY OS (macOs, Windows or Linux)
+  * ❌NOT use cases❌
+    * run Docker WITHOUT Docker Desktop Application | Linux
+      * Reason:🧠| host, you can SIMPLY send traffic -- to the -- node IPs🧠
 
-If you are running Docker without the Docker Desktop Application on Linux, you can simply send traffic to the node IPs from the host without extra port mappings. 
-With the installation of the Docker Desktop Application, whether it is on macOs, Windows or Linux, you'll want to use these.
+* [Ingress guide](ingress)
 
-You may also want to see the [Ingress Guide].
-
+TODO: 
 > **NOTE**: If you're running Kind on a remote host and need to send traffic to Kind node
 > IPs from a different host than where kind is running, you need to configure port-mapping.
-
-{{< codeFromFile file="static/examples/config-with-port-mapping.yaml" lang="yaml" >}}
-
-An example http pod mapping host ports to a container port.
-
-```yaml
-kind: Pod
-apiVersion: v1
-metadata:
-  name: foo
-spec:
-  containers:
-  - name: foo
-    image: hashicorp/http-echo:0.2.3
-    args:
-    - "-text=foo"
-    ports:
-    - containerPort: 5678
-      hostPort: 80
-```
-
-#### NodePort with Port Mappings
-
-To use port mappings with `NodePort`, the kind node `containerPort` and the service `nodePort` needs to be equal.
-
-```yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-nodes:
-- role: control-plane
-  extraPortMappings:
-  - containerPort: 30950
-    hostPort: 80
-```
-
-And then set `nodePort` to be 30950.
-
-```yaml
-kind: Pod
-apiVersion: v1
-metadata:
-  name: foo
-  labels:
-    app: foo
-spec:
-  containers:
-  - name: foo
-    image: hashicorp/http-echo:0.2.3
-    args:
-    - "-text=foo"
-    ports:
-    - containerPort: 5678
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: foo
-spec:
-  type: NodePort
-  ports:
-  - name: http
-    nodePort: 30950
-    port: 5678
-  selector:
-    app: foo
-```
-
-[Ingress Guide]: /docs/user/ingress
 
 ### Extra Labels
 
