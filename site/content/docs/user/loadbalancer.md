@@ -18,41 +18,14 @@ description: |-
 
 ---
 
-## Installing Cloud Provider KIND
+* goal
+  * how to set up a service / type = LoadBalancer working | Kind cluster
+    * -- through -- [cloud-provider-kind](https://github.com/kubernetes-sigs/cloud-provider-kind) v0.9.0+
 
-Cloud Provider KIND can be installed using golang
+* requirements
+  * privileges -- to -- open ports | system
+  * connect -- to the -- container runtime 
 
-{{< codeFromInline lang="bash" >}}
-go install sigs.k8s.io/cloud-provider-kind@latest
-{{< /codeFromInline >}}
-
-or downloading one of the [released binaries](https://github.com/kubernetes-sigs/cloud-provider-kind/releases).
-
-Cloud Provider KIND runs as a standalone binary in your host and connects to your KIND cluster and provisions new Load Balancer containers for your Services. It requires privileges to open ports on the system and to connect to the container runtime.
-
-## Using LoadBalancer
-
-The following example creates a loadbalancer service that routes to two http-echo pods, one that outputs foo and the other outputs bar.
-
-```yaml
-{{% readFile "static/examples/loadbalancer/usage.yaml" %}}
-```
-
-Apply the contents
-
-{{< codeFromInline lang="yaml" >}}
-kubectl apply -f https://kind.sigs.k8s.io/examples/loadbalancer/usage.yaml
-{{< /codeFromInline>}}
-
-Now verify that the loadbalancer works by sending traffic to it's external IP and port.
-
-{{< codeFromInline lang="bash" >}}
-LB_IP=$(kubectl get svc/foo-service -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
-{{< /codeFromInline >}}
-
-```bash
-# should output foo and bar on separate lines 
-for _ in {1..10}; do
-  curl ${LB_IP}:5678
-done
-```
+* steps
+  * [install Cloud Provider KIND](https://kubernetes-sigs.github.io/cloud-provider-kind/#/?id=main)
+  * run Kubernetes service / type = LoadBalancer

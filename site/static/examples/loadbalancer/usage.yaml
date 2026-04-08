@@ -41,3 +41,4 @@ spec:
   ports:
   - port: 5678
     targetPort: 8080
+    # routes -- to -- 2 http-echo pods

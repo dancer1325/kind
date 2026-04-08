@@ -1,10 +1,10 @@
 # requirements
-## create the Cluster
 
 * `kind create cluster`
-* [run Cloud Provider KIND](loadbalancer.md)
-  * TODO:
-
+* [install Cloud Provider KIND](https://kubernetes-sigs.github.io/cloud-provider-kind/#/?id=main)
+* `sudo cloud-provider-kind`
+  * == run cloud-provider-kind
+  * AUTOMATICALLY enables LoadBalancer support -- for -- Ingress
 
 # allows
 ## exposes HTTP & HTTPS routes | outside the cluster -- to -- services | cluster
@@ -12,9 +12,9 @@
   * | repo host path, `kubectl apply -f site/static/examples/ingress/usage.yaml`
 
 * `kubectl get ingress`
-    * check the External IP != null
+  * check the ADDRESS != null
 
-* check it's reached
+* check pod's endpoints are reached
 
   ```
   # get the Ingress IP
@@ -22,5 +22,8 @@
   
   # | your machine, hit the pod's endpoints
   curl ${INGRESS_IP}/foo
+  # 's output: foo-app
+  
   curl ${INGRESS_IP}/bar
+  # 's output: bar-app
   ```
