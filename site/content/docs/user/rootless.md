@@ -6,73 +6,85 @@ menu:
     identifier: "rootless"
     weight: 3
 ---
-Starting with kind 0.11.0, [Rootless Docker](https://docs.docker.com/go/rootless/), [Rootless Podman](https://github.com/containers/podman/blob/master/docs/tutorials/rootless_tutorial.md) and [Rootless nerdctl](https://github.com/containerd/nerdctl/blob/main/docs/rootless.md) can be used as the node provider of kind.
 
-## Provider requirements
+* ⚠️requirements ⚠️
+  * kind v0.11.0+,
+  * container engine
+    * Docker v20.10+
+    * Podman v3.0+
+    * nerdctl v1.7+
+  * [host requirements](#host-requirements)
 
-- Docker: 20.10 or later
-- Podman: 3.0 or later
-- nerdctl: 1.7 or later
+* rootles
+  * uses
+    * kind node provider
+  * AVAILABLE | 
+    * [Docker](https://docs.docker.com/go/rootless/)
+    * [Podman](https://github.com/containers/podman/blob/master/docs/tutorials/rootless_tutorial.md) 
+    * [nerdctl](https://github.com/containerd/nerdctl/blob/main/docs/rootless.md)
 
 ## Host requirements
 
 ### cgroup v2
 
-The host needs to be running with cgroup v2, which is the default for many Linux disributions:
+* == host needs to be running -- with -- cgroup v2
+  * Linux disributions | it's the default one
+    - Ubuntu v21.10+
+    - Fedora: v31+
+    - Arch April 2021 release
 
-- Ubuntu: 21.10 and later.
-- Fedora: 31 and later.
-- Arch: April 2021 release and later.
+* way to check the cgroup version / used -- by -- your controller runtime
+  - | Docker,
+    - run `docker info` 
+    - | output, look for `Cgroup Version: 2` 
+  - | Podman,
+    - run `podman info`
+    - | output, look for `Cgroup Version: 2`
+  - | nerdctl,
+    - run `nerdctl info`
+    - | output, look for `Cgroup Version: 2`
 
-You can verify the cgroup version used by your controller runtime with the following procedure:
+* steps to enable the cgroup v2
+  1. | "/etc/default/grub",
+     * add the line `GRUB_CMDLINE_LINUX="systemd.unified_cgroup_hierarchy=1"`
+  2. Run `sudo update-grub`
+  3. enable `cpu` controller's [cgroup delegation](https://systemd.io/CGROUP_DELEGATION/) -- for -- user services
+     * | distributions / run `systemd` version 252+, 
+       * enabled by default
+     * if you want to enable cgroup delegation | ALL the controllers -> proceed via
+       1. TODO: Check your version of `systemd` by running `systemctl --version`. If the output prints
+          `systemd 252` or higher, no further action is needed. Example output below from a Fedora host:
 
-- `docker`: Run `docker info` and look for `Cgroup Version: 2` in the output.
-- `podman`: Run `podman info` and look for `cgroupVersion: v2` in the output.
-- `nerdctl`: Run `nerdctl info` and look for `Cgroup Version: 2` in the output.
+          ```sh
+          $ systemctl --version
+          systemd 257 (257.9-2.fc42)
+          ```
 
-If the `info` output prints `Cgroup Version: 1` or equivalent, try the following to enable cgroup v2:
+       2. For systems with older versions of `systemd`, first create the directory
+          `/etc/systemd/system/user@.service.d/` if it is not present.
 
-1. In `/etc/default/grub`, add the line `GRUB_CMDLINE_LINUX="systemd.unified_cgroup_hierarchy=1"`
-2. Run `sudo update-grub` to enable cgroup v2.
+          ```sh
+          sudo mkdir -p /etc/systemd/system/user@.service.d/
+          ```
 
-Your host will also need to enable [cgroup delegation](https://systemd.io/CGROUP_DELEGATION/) of the `cpu` controller for
-user services. This is enabled by default for distributions running `systemd` version 252 and higher.
+       3. Next, create the file `/etc/systemd/system/user@.service.d/delegate.conf` with the following content:
 
-To enable cgroup delegation for all the controllers, do the following:
+          ```ini
+          [Service]
+          Delegate=yes
+          ```
 
-1. Check your version of `systemd` by running `systemctl --version`. If the output prints
-   `systemd 252` or higher, no further action is needed. Example output below from a Fedora host:
+       4. Reload systemd for these changes to take effect:
 
-   ```sh
-   $ systemctl --version
-   systemd 257 (257.9-2.fc42)
-   ```
+          ```sh
+          sudo systemctl daemon-reload
+          ```
 
-2. For systems with older versions of `systemd`, first create the directory
-   `/etc/systemd/system/user@.service.d/` if it is not present.
+       5. If using docker, reload the user docker daemon:
 
-   ```sh
-   sudo mkdir -p /etc/systemd/system/user@.service.d/
-   ```
-
-3. Next, create the file `/etc/systemd/system/user@.service.d/delegate.conf` with the following content:
-
-   ```ini
-   [Service]
-   Delegate=yes
-   ```
-
-4. Reload systemd for these changes to take effect:
-
-   ```sh
-   sudo systemctl daemon-reload
-   ```
-
-5. If using docker, reload the user docker daemon:
-
-   ```sh
-   systemctl --user restart docker
-   ```
+          ```sh
+          systemctl --user restart docker
+          ```
 
 ### Networking
 
@@ -215,24 +227,28 @@ To allow a KIND node to bind to ports 80 and/or 443 on the host, do the followin
 
 Alternatively, restart your system for these changes to take effect.
 
-## Restrictions
+## ⚠️kind cluster's restrictions⚠️
 
-The restrictions of Rootless Docker apply to kind clusters as well.
+* == rootless Docker's restrictions
+  * _Examples:_
+    - ❌OverlayFS can NOT be used❌ 
+      - unless the host is using 
+        - kernel >= 5.11, OR
+        - Ubuntu/Debian kernel
+    - ❌can NOT❌ 
+      - mount 
+        - NFS
+        - block storage
 
-e.g.
-- OverlayFS cannot be used unless the host is using kernel >= 5.11, or Ubuntu/Debian kernel
-- Cannot mount block storage
-- Cannot mount NFS
+## how to create a kind cluster with
+### Rootless Docker
 
-## Creating a kind cluster with Rootless Docker
-
-To create a kind cluster with Rootless Docker, just run:
 ```console
 $ export DOCKER_HOST=unix://${XDG_RUNTIME_DIR}/docker.sock
 $ kind create cluster
 ```
 
-## Creating a kind cluster with Rootless Podman
+### Rootless Podman
 
 To create a kind cluster with Rootless Podman, just run:
 ```console
@@ -252,7 +268,7 @@ $ systemd-run --scope --user -p "Delegate=yes" kind create cluster
 
 If you still get the error `running kind with rootless provider requires setting systemd property "Delegate=yes"` even with [host requirements](#host-requirements) configured.
 
-## Creating a kind cluster with Rootless nerdctl
+### Rootless nerdctl
 
 **Note: containerd v1.7+ is required**
 
@@ -262,4 +278,8 @@ $ KIND_EXPERIMENTAL_PROVIDER=nerdctl kind create cluster
 ```
 
 ## Tips
-- To enable OOM watching, allow `dmesg` by running `sysctl -w kernel.dmesg_restrict=0`.
+- if you want to enable OOM watching -> enable `dmesg`
+
+   ```
+   sysctl -w kernel.dmesg_restrict=0
+   ```
