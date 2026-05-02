@@ -217,8 +217,12 @@ TODO:
 
 ### Extra Labels
 
-Extra labels might be useful for working with
-[nodeSelectors](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/).
+* | "*.yaml" / `kind: Cluster`
+  * specify `nodes[*].labels`, adding a `<key>: <value>` pairS
+
+* uses
+  * | work with [nodeSelectors](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)
+
 
 An example label for specifying a `tier` label:
 
